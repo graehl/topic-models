@@ -12,7 +12,7 @@
 PWD := $(shell pwd)
 #     installed location of where to find libstb
 #       i.e.,   libstb.a is in $(STB)/lib/
-STB_HOME := $(PWD)/../../libstb
+STB_HOME := $(PWD)/..
 export STB_HOME
 export PWD
 
