@@ -89,7 +89,7 @@ while ( ($_=<DW>) ) {
       $lc = 0;
   }
   if ( $f<0 || $f> $WORDS ) {
-   die "Bad feature in: $_";
+   die "Bad feature '$f' (not in [0..$WORDS] for line: $_";
   }
   if ( $c<=0 ) {
     die "Bad doc, got negative count in: $_";
@@ -115,7 +115,7 @@ while ( ($_=<DW>) ) {
   }
 }
 if ( $lc>0 ) {
-  $cnt{$lf} = $lc;     
+  $cnt{$lf} = $lc;
   $nl ++;
 }
 print TB "$nl ";
@@ -148,7 +148,7 @@ docword2bag STEM
 =head1 DESCRIPTION
 
 Expects to find vocab.STEM.txt and docword.STEM.txt or docword.STEM.txt.gz
-in the UCI data format in the current directory.  
+in the UCI data format in the current directory.
 These are converted to the input required for
 DCA's ".txtbag" format or the LDAC format.
 Note docword format has word indices offset by 1, so we have to
@@ -173,5 +173,3 @@ it under the same terms as Perl itself, either Perl version 5.8.4 or,
 at your option, any later version of Perl 5 you may have available.
 
 =cut
-
-

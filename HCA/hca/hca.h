@@ -3,7 +3,7 @@
  * Copyright (C) 2009-2014 Wray Buntine
  * All rights reserved.
  *
- * This Source Code Form is subject to the terms of the Mozilla 
+ * This Source Code Form is subject to the terms of the Mozilla
  * Public License, v. 2.0. If a copy of the MPL was not
  * distributed with this file, You can obtain one at
  *      http://mozilla.org/MPL/2.0/.
@@ -17,12 +17,12 @@
 
 /*
  *  this is defined in "stats.h"
- *  #define NG_SCALESTATS 
+ *  #define NG_SCALESTATS
  */
 
 #include <unistd.h>
-#include "lgamma.h" 
-#include "util.h" 
+#include "lgamma.h"
+#include "util.h"
 #include "stable.h"
 #include "pctl.h"
 #include "stats.h"
@@ -37,13 +37,13 @@
  */
 // #define H_THREADS
 
-/* 
- *   when defined, stops introducing new topics into a 
+/*
+ *   when defined, stops introducing new topics into a
  *   document after the first ... ???
  */
 // #define GIBBS_ZEROD
 
-/* 
+/*
  *   Allow experimental stuff ... only for developers since
  *   they mostly don't work
  */
@@ -56,6 +56,16 @@
 #ifdef TRACE_WT
 #define TR_W 4744
 #define TR_T 7
+#endif
+
+#ifndef HCA_MIN_DOCS
+/*
+ *   minimum allowed # of docs (was formerly 5)
+ */
+// #define HCA_MIN_DOCS
+#define HCA_MIN_DOCS 1
+#define HCA_STR(x) #x
+#define HCA_MIN_DOCS_STR() HCA_STR(HCA_MIN_DOCS)
 #endif
 
 /*
@@ -75,7 +85,7 @@ float **hca_topmtx();
 void like_merge(float minprop, double scale, int best);
 
 void query_read(char *fname);
-void gibbs_query(char *stem, int K, char *qname, int dots, int procs, 
+void gibbs_query(char *stem, int K, char *qname, int dots, int procs,
 		 int doexclude, float scale);
 
 void print_maxz(char *fname);

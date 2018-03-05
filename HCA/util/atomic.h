@@ -3,7 +3,7 @@
  * Copyright (C) 2014 Wray Buntine and Swapnil Mishra
  * All rights reserved.
  *
- * This Source Code Form is subject to the terms of the Mozilla 
+ * This Source Code Form is subject to the terms of the Mozilla
  * Public License, v. 2.0. If a copy of the MPL was not
  * distributed with this file, You can obtain one at
  *      http://mozilla.org/MPL/2.0/.
@@ -13,7 +13,7 @@
  *
  *
  *  Note return values for the _fetch() routines currently *NOT* used
- *  so can do  _atomic_add_fetch() or _atomic_fetch_add() 
+ *  so can do  _atomic_add_fetch() or _atomic_fetch_add()
  */
 #ifndef __ATOMIC_H
 #define __ATOMIC_H
@@ -28,7 +28,7 @@
 
 
 #ifdef NONATOMIC
-/* 
+/*
  *    *no* atomic ops
  */
 #define atomic_incr(inttype) (++(inttype))
@@ -41,9 +41,9 @@
 #define atomic_add(inttype,val) (inttype += val)
 #define atomic_sub(inttype,val) (inttype -= val)
 #else
-#if ( (__GNUC__==4 && __GNUC_MINOR__>=7) || __GNUC__>4 )
-/* 
- *    Test for GCC == 4.[789].? 
+#if ( (__GNUC__==4 && __GNUC_MINOR__>=7) || __GNUC__>4 || __APPLE_CC__ >= 6000)
+/*
+ *    Test for GCC == 4.[789].?
  */
 #define atomic_decr_val(inttype,val)  __atomic_compare_exchange_n(&(inttype),&val,(val-1),0,__ATOMIC_RELAXED,__ATOMIC_RELAXED)
 #define atomic_incr_val(inttype,val)  __atomic_compare_exchange_n(&(inttype),&val,(val+1),0,__ATOMIC_RELAXED,__ATOMIC_RELAXED)
@@ -53,7 +53,7 @@
 #define atomic_sub(inttype,val) __atomic_sub_fetch(&(inttype),val, __ATOMIC_RELAXED)
 #else
 #if (__GNUC__==4 && (( __GNUC_MINOR__==1 &&__GNUC_PATCHLEVEL__==2) || ( __GNUC_MINOR__>=4 && __GNUC_MINOR__<=6 ) )  )
-/* 
+/*
  *    Test for GCC == 4.1.2 or  GCC == 4.4.?
  */
 #define atomic_decr_val(inttype,val) __sync_bool_compare_and_swap(&(inttype),val,(val-1))

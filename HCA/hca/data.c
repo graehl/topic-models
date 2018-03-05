@@ -1,9 +1,9 @@
 /*
  * Various data structure read/write/report routines.
- * Copyright (C) 2010-2014 Wray Buntine 
+ * Copyright (C) 2010-2014 Wray Buntine
  * All rights reserved.
  *
- * This Source Code Form is subject to the terms of the Mozilla 
+ * This Source Code Form is subject to the terms of the Mozilla
  * Public License, v. 2.0. If a copy of the MPL was not
  * distributed with this file, You can obtain one at
  *      http://mozilla.org/MPL/2.0/.
@@ -35,8 +35,8 @@
 void data_alloc() {
   int i;
   ddD.c = NULL;
-  if ( ddP.phi==NULL && ddN.DT<5 )
-    yap_quit("Only %d training examples\n", ddN.DT);
+  if ( ddP.phi==NULL && ddN.DT<HCA_MIN_DOCS )
+    yap_quit("Only %d training examples (require " HCA_MIN_DOCS_STR() ")\n", ddN.DT);
 
   ddD.NdT  = u16vec(ddN.D);
   ddD.df = NULL;
@@ -75,7 +75,7 @@ int data_df(char *stem) {
   FILE *fp;
   int n_df;
   int i;
-  
+
   if ( ddD.df )
     return ddD.n_df;
   ddD.df = u32vec(ddN.W);
@@ -85,7 +85,7 @@ int data_df(char *stem) {
    */
   wname = yap_makename(stem, ".srcpar");
   fp = fopen(wname,"r");
-  if ( fp ) { 
+  if ( fp ) {
     fclose(fp);
     /*  it does so read dfdocs */
     {
@@ -101,12 +101,12 @@ int data_df(char *stem) {
     n_df = ddN.DT;
   }
   free(wname);
-  
-  /*  
+
+  /*
    *  first try read dfs from "stem.words"
    */
   wname = yap_makename(stem, ".df");
-  fp = fopen(wname ,"r"); 
+  fp = fopen(wname ,"r");
   if ( fp ) {
     for (i = 0; i < ddN.W; i++) {
       int sl;
@@ -123,13 +123,13 @@ int data_df(char *stem) {
     }
     fclose(fp);
   } else {
-    /*  
-     *  second try read dfs from "stem.df" 
+    /*
+     *  second try read dfs from "stem.df"
      */
     free(wname);
     wname = yap_makename(stem, ".words");
-    fp = fopen(wname ,"r"); 
-    if ( fp ) { 
+    fp = fopen(wname ,"r");
+    if ( fp ) {
       for (i = 0; i < ddN.W; i++) {
 	int sl;
 	unsigned df;
@@ -146,7 +146,7 @@ int data_df(char *stem) {
       fclose(fp);
     } else {
       uint32_t *flag = u32vec(ddN.W);
-      /* 
+      /*
        *   else compute from training data
        */
       for (i = 0; i < ddN.DT; i++) {
@@ -178,8 +178,8 @@ void data_class(char *stem) {
     int i, c;
     int maxc = 0;
     ddD.c = u16vec(ddN.D);
-    FILE *fp = fopen(cfile ,"r"); 
-    if ( !fp ) 
+    FILE *fp = fopen(cfile ,"r");
+    if ( !fp )
       yap_sysquit( "Cannot open file '%s' for read\n", cfile);
     for (i = 0; i < ddN.D; i++) {
       if ( fscanf(fp,"%d",&c) ) {
@@ -285,11 +285,11 @@ void data_checkpoint(char *resstem, char *stem, int ITER) {
 	int size;
 	fname = yap_makename(resstem,".ngs");
 	fpout = fopen(fname,"wb");
-	if ( !fpout ) 
-	  yap_sysquit("Cannot open file '%s' for write in data_checkpoint()\n", 
+	if ( !fpout )
+	  yap_sysquit("Cannot open file '%s' for write in data_checkpoint()\n",
 		      fname);
 	size = ddN.D*M_bitveclen();
-	if ( fwrite(ddS.sparse[0], sizeof(ddS.sparse[0][0]), size, fpout) 
+	if ( fwrite(ddS.sparse[0], sizeof(ddS.sparse[0][0]), size, fpout)
 	     !=size )
 	  yap_sysquit("Cannot write bitvector to '%s' in data_checkpoint()\n", fname);
 	fclose(fpout);
