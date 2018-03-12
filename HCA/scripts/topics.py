@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 ###
 
@@ -519,7 +519,7 @@ class TopicDiscovery(object):
         return self.topics
 
     def parse_assign(self, topicline):
-        m = topicre.match(topicline)
+        m = topicre.match(to_unicode(topicline))
         if m is not None:
             topic = int(m.group(1))
             assert topic < len(self.topics)
@@ -536,9 +536,7 @@ class TopicDiscovery(object):
 def main(opt):
     td = TopicDiscovery(opt)
     topics = td.topicphrases()
-    #print '\n'.join(str(t) for t in topics)
-    #print
-    print str(td)
+    print(str(td))
 
 if __name__ == '__main__':
     try:
