@@ -15,7 +15,7 @@ Achilles, albedo, Hector, Thetis, Trojan, Patroclus, Troy, Odysseus, Iliad, refl
 ASD symptoms, autistic symptoms, autistic behavior, Rand, autism, altruism, TAI, genetic, syndrome
 ```
 
-(input file:
+(input file one sentence per line preferred (empty line between paragraphs):
 ```
 …
 The diversity in anarchism has led to widely different use of identical terms among different anarchist traditions ,  which has led to many definitional concerns in anarchist theory .
@@ -30,6 +30,7 @@ API usage:
 import topics as T
 
 topt = T.TopicDiscovery_defaults()
+topt.quality = 2 # 0-10 scale; lower is faster
 topt.topics = 10
 topt.topic_length = 12
 topt.sentences = True
