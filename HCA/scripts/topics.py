@@ -45,7 +45,7 @@ _native_to_unicode = (lambda s: s.decode("utf-8")) if six.PY2 else (lambda s: s)
 _unicode_to_native = (lambda s: s.encode("utf-8")) if six.PY2 else (lambda s: s)
 
 def to_unicode(s):
-    if six.PY2 and isinstance(s, str):
+    if isinstance(s, str):
         return s.decode("utf-8")
     return s
 
