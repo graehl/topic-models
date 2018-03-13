@@ -8,4 +8,4 @@ if ! [[ -f $wp ]] ; then
     wp=
 fi
 set -x
-DEBUG=1 python $d/topics.py *.py *.pl -k 10 --topic-length 8
+DEBUG=1 ${python:-python} $d/topics.py $d/topics-demo.py $d/test-topics.sh  -k 3 --topic-length 10 --quality 3

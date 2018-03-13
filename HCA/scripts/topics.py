@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 ###
 
@@ -55,7 +55,10 @@ def ustrlen(s):
 import gzip
 
 def opengz(filename, mode='r'):
-    return (gzip.open if filename.endswith('.gz') else open)(filename, mode)
+    if six.PY2:
+        return (gzip.open if filename.endswith('.gz') else open)(filename, mode)
+    else:
+        return open(filename, mode, encoding='utf-8')
 
 spacere=re.compile(r'\s+')
 def singlespace(s):
@@ -267,7 +270,7 @@ def read_docs(doclist, stopwords, opt, id, eod=EOD_line, name=None):
     if name is None:
        name = '' if isinstance(docs, list) else docs
     docseq = docs(doclist if isinstance(doclist, list)
-                      else open(doclist), tokenize=opt.tokenize, downcase_first=opt.sentences, eod=eod)
+                      else opengz(doclist), tokenize=opt.tokenize, downcase_first=opt.sentences, eod=eod)
     for toks in docseq:
         yield Doc(opt, name, id, toks, stopwords)
         id += 1
